@@ -1,9 +1,133 @@
 <!DOCTYPE html>
-<html lang="en">
-    <head>
-        <title>DELI-VERY</title>
-    </head>
-    <body>
-        <h1>Hello World!!!</h1>
-    </body>
+<html lang="en" xmlns:v-bind="http://www.w3.org/1999/xhtml" , xmlns:v-on="http://www.w3.org/1999/xhtml">
+<head>
+
+    <script src="https://vuejs.org/js/vue.js"></script>
+    <script src="/socket.io/socket.io.js" defer></script>
+    <script src="js/vue_script.js" defer></script>
+    <script src="js/js_script.js" defer></script>
+    <script src="/vue/vue.js" defer></script>
+    <script src="js/deli-very.js" defer></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+
+    <script type="text/javascript" src="js/menu.js"></script>
+
+    <link rel="stylesheet" href="css/deli-very.css">
+    <link rel="stylesheet" type="text/css" href="css/style.css">
+    <meta charset="utf-8"/>
+
+    <title>BurgerTown</title>
+
+</head>
+<body>
+<main>
+    <div id="MyVue">
+        <section class="header">
+            <h1 style="position: absolute;">Välkommen till BurgerTown</h1>
+            <img src="img/superburger.jpg" alt="flyingburgers">
+        </section>
+        <section class="menu">
+
+            <h2>Select burgers</h2>
+            <div class="wrapper">
+                <div v-for="burgare in burgers" class="burger-item">
+                    {{ burgare.burgername }}
+
+                    <img v-bind:src="burgare.image" alt="1">
+                    <span id="addBurger">Add burger:</span><input type="checkbox" v-model="chosenburgers"
+                                                                  :value="burgare.burgername" required="required">
+                    <ul>
+                        <li v-for="ingredient in burgare.ingredients">
+                            {{ ingredient }}
+                        </li>
+                        <li v-if="burgare.lactose">
+                            Contains lactose
+                        </li>
+                        <li v-if="burgare.gluten">
+                            Contains gluten
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+
+        </section>
+        <section class="customer">
+            <h2>Customer information</h2>
+            <span>This is where you put your info</span>
+            <h3>Delivey information</h3>
+            <p>
+                <label for="fullName">Full name</label><br>
+                <input type="text" id="fullName" v-model="fullName" required="required"
+                       placeholder="First- and Last name">
+            </p>
+            <p>
+                <label for="mail">E-mail</label><br>
+                <input type="email" id="mail" v-model="mail" required="required" placeholder="E-mail">
+            </p>
+            <!--<p>
+                <label for="street">Street</label><br><input type="text" id="street" v-model="street" required="required" placeholder="Street name">
+            </p>-->
+            <!--<p>
+                <label for="house">House</label><br>
+                <input type="number" id="house" v-model="house" required="required" placeholder="House number">
+            </p>-->
+
+
+            <p>
+                <label for="payment">Payment options</label><br>
+                <select id="payment" name="pay" v-model="payment">
+                    <option>Swish</option>
+                    <option>Credit card</option>
+                    <option>Bank</option>
+                    <option>Cash</option>
+                    <option>Natura</option>
+                </select>
+            </p>
+
+            <p>
+                <br><input type="radio" v-model="sex" name="gender" value="male" checked="checked">Male</br>
+                <br><input type="radio" v-model="sex" name="gender" value="female">Female</br>
+                <br><input type="radio" v-model="sex" name="gender" value="non-binary">Non-binary</br>
+                <br><input type="radio" v-model="sex" name="gender" value="undisclosed">Undisclosed</br>
+            </p>
+            <h1> Click in the map! </h1>
+            <div class="view-box">
+                <div id="dots" v-on:click="addOrder">
+                    <div v-for="(order, key) in orders" v-bind:style="{ left: order.details.x + 'px', top: order.details.y + 'px'}">
+                        {{ key }}
+                    </div>
+                </div>
+            </div>
+            <div class="orderButton">
+                <button type="submit" v-on:click="markDone()">
+                    <img src="img/button_image.jpeg" width="15" height="15">
+                    Place your order!
+                </button>
+
+            </div>
+            <div v-if="chosenburgers.length>0">
+                <h4>Your order</h4>
+                <ul>
+                    <li v-for="burger in chosenburgers">1x {{ burger }}</li>
+                </ul>
+                <h4>Customer Information</h4>
+                <ul>
+                    <li v-if="fullName.length>0"> {{ fullName }}</li>
+                    <li v-if="mail.length>0"> {{ mail }}</li>
+                    <!-- <li  v-if="street.length>0 && house.length>0"> {{ street }} {{ house }}</li> Visar gatuadress-->
+                    <li>{{ payment }}</li>
+                    <li>{{ sex }}</li>
+                </ul>
+            </div>
+        </section>
+    </div><!-- End of MyVue   -->
+    <footer>
+        <hr>
+        © 2019 BurgerTown </hr>
+    </footer>
+</main>
+</body>
+
 </html>
